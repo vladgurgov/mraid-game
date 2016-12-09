@@ -141,6 +141,7 @@ function create() {
 
     //  Set a TimerEvent to occur after 2 seconds
     timer.loop(2000, changeDirection, enemy);
+    timer.add(15000, gameOver);
 
     //  Start the timer running - this is important!
     //  It won't start automatically, allowing you to hook it to button events and the like.
