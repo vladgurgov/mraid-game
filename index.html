@@ -47,6 +47,7 @@ var vjoy;
 var stars;
 var score = 0;
 var scoreText;
+var gameTime = 15000;
 
 function create() {
 
@@ -116,7 +117,7 @@ function create() {
     }
 
     //  The score
-    scoreText = game.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
+    scoreText = game.add.text(16, 16, 'Score: 0', { fontSize: '32px', fill: '#000' });
 
     //  Our controls.
     cursors = game.input.keyboard.createCursorKeys();
@@ -141,8 +142,8 @@ function create() {
 
     //  Set a TimerEvent to occur after 2 seconds
     timer.loop(2000, changeDirection, enemy);
-    timer.add(15000, gameOver);
-
+    timer.add(gameTime, gameOver);
+    timer.loop(1000, scoreUpdate, this);
     //  Start the timer running - this is important!
     //  It won't start automatically, allowing you to hook it to button events and the like.
     timer.start();
@@ -199,7 +200,7 @@ function update() {
     }
     if (cursors.down.isDown)
     {
-        gameOver();
+        //gameOver();
     }
 
 
@@ -212,8 +213,7 @@ function collectStar (player, star) {
 
     //  Add and update the score
     score += 10;
-    scoreText.text = 'Score: ' + score;
-
+    scoreUpdate();
 }
 
 function killedByEnemy (player, enemy) {
@@ -242,16 +242,26 @@ function changeDirection() {
 function gameOver() {
     player.kill();
     vjoy.inputDisable();
-    score = -666;
+    timer.stop();
     scoreText.text = 'Game Over! Play Full Version';
-    var popup = game.add.button(30, 50, 'banner', bannerClick, this);
+    var popup = game.add.button(30, 60, 'banner', bannerClick, this);
     popup.scale.setTo(0.9, 0.9);
+
+}
+
+function scoreUpdate(){
+    scoreText.text = 'Score: ' + score +' Time: ' + timeLeft() ;
+;
 
 }
 
 function bannerClick() {
     window.location = "https://play.google.com/store/apps/details?id=com.gameloft.android.ANMP.GloftDOHM";
 
+}
+
+function timeLeft(){
+    return Math.round(Math.max(0, gameTime/1000-timer.seconds));
 }
 
 </script>
