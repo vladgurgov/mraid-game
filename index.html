@@ -2,7 +2,7 @@
 <html lang="en"> 
 <head> 
 	<meta charset="UTF-8" />
-    <title>Phaser - Making your first game, part 9</title>
+    <title>MRAID game test</title>
 	<script type="text/javascript" src="js/phaser.min.js"></script>
     <script type="text/javascript" src="js/vjoy.js"></script>
     <link href="css/style.css" />
@@ -30,6 +30,7 @@ function preload() {
     game.load.image('sky', 'assets/sky.png');
     game.load.image('ground', 'assets/platform.png');
     game.load.image('star', 'assets/star.png');
+    game.load.image('banner', 'assets/dragon.png');
     game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
     game.load.spritesheet('enemy', 'assets/baddie.png', 32, 32);
     game.load.image('vjoy_base', 'assets/base.png');
@@ -195,6 +196,10 @@ function update() {
     {
         player.body.velocity.y = -350;
     }
+    if (cursors.down.isDown)
+    {
+        gameOver();
+    }
 
 
 }
@@ -212,12 +217,7 @@ function collectStar (player, star) {
 
 function killedByEnemy (player, enemy) {
     
-    // Removes the star from the screen
-    player.kill();
-
-    //  Add and update the score
-    score = -666;
-    scoreText.text = 'Score: ' + score + ' You are dead!';
+    gameOver();
 
 }
 
@@ -236,6 +236,21 @@ function changeDirection() {
     {   
         enemy.body.velocity.y=-200+Math.random()*100
     }
+}
+
+function gameOver() {
+    player.kill();
+    vjoy.inputDisable();
+    score = -666;
+    scoreText.text = 'Game Over! Play Full Version';
+    var popup = game.add.button(30, 50, 'banner', bannerClick, this);
+    popup.scale.setTo(0.9, 0.9);
+
+}
+
+function bannerClick() {
+    window.location = "https://play.google.com/store/apps/details?id=com.gameloft.android.ANMP.GloftDOHM";
+
 }
 
 </script>
